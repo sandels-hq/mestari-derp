@@ -27,9 +27,20 @@ resource "google_compute_instance" "derp1" {
   network_interface {
     network    = google_compute_network.mestari.id
     subnetwork = google_compute_subnetwork.mestari.id
+    stack_type = "IPV4_IPV6"
     # access_config {
     #   nat_ip = google_compute_address.derp1_public.address
     # }
+    # ipv6_access_config {
+    #   external_ipv6 = google_compute_address.derp1_ipv6.address
+    #   network_tier  = "PREMIUM"
+    # }
+    ipv6_access_config {
+      external_ipv6               = google_compute_address.derp1_ipv6.address
+      external_ipv6_prefix_length = "96"
+      name                        = "external-ipv6"
+      network_tier                = "PREMIUM"
+    }
   }
   metadata = {
     user-data = file("${path.module}/cloud-config.yaml")

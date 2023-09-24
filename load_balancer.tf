@@ -8,6 +8,18 @@ resource "google_compute_forwarding_rule" "l3" {
   ip_address      = google_compute_address.derp_lb.id
 }
 
+resource "google_compute_forwarding_rule" "l3_ipv6" {
+  provider        = google-beta
+  name            = "derp-l3-ipv6"
+  backend_service = google_compute_region_backend_service.l3.id
+  ip_protocol     = "L3_DEFAULT"
+  all_ports       = true
+  ip_address      = google_compute_address.derp_lb_ipv6.id
+  ip_version      = "IPV6"
+  subnetwork      = google_compute_subnetwork.mestari.id
+}
+
+
 # backend service
 resource "google_compute_region_backend_service" "l3" {
   provider              = google-beta

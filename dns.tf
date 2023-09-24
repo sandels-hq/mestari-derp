@@ -12,3 +12,12 @@ resource "google_dns_record_set" "derp" {
 
   rrdatas = [google_compute_address.derp_lb.address]
 }
+
+resource "google_dns_record_set" "derp_ipv6" {
+  name         = google_dns_managed_zone.derp_public.dns_name
+  type         = "AAAA"
+  ttl          = 300
+  managed_zone = google_dns_managed_zone.derp_public.name
+
+  rrdatas = [google_compute_address.derp_lb_ipv6.address]
+}
