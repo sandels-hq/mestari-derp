@@ -22,11 +22,11 @@ resource "google_compute_address" "mestari_nat" {
   address_type = "EXTERNAL"
 }
 
-resource "google_compute_address" "derp1_public" {
-  name         = "derp1"
-  region       = var.region
-  address_type = "EXTERNAL"
-}
+# resource "google_compute_address" "derp1_public" {
+#   name         = "derp1"
+#   region       = var.region
+#   address_type = "EXTERNAL"
+# }
 
 resource "google_compute_router" "mestari" {
   project = var.project_id

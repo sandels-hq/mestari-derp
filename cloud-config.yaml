@@ -1,0 +1,40 @@
+#cloud-config
+groups:
+  - derp
+
+users:
+  - default
+  - name: derp
+    gecos: derp
+    shell: /bin/bash
+    primary_group: derp
+    lock_passwd: false
+
+runcmd:
+  - apt-get update
+  - apt-get install -y net-tools
+  - cd /root && wget https://go.dev/dl/go1.21.1.linux-amd64.tar.gz
+  - rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.1.linux-amd64.tar.gz
+  - echo 'export PATH=$PATH:/usr/local/go/bin' | tee -a /home/derp/.profile 
+  - sudo -u derp -i go install tailscale.com/cmd/derper@main
+  - setcap 'cap_net_bind_service=+ep' /home/derp/go/bin/derper
+  - |
+    tee /etc/systemd/system/derper.service <<'EOF'
+    [Unit]
+    Description=DERP Server
+    After=network.target
+    
+    [Service]
+    User=derp
+    Group=derp
+    Environment=DOMAIN=derp.louhintamestarit.fi
+    Environment=DIRECTORY=/home/derp
+    ExecStart=/bin/bash -c "${DIRECTORY}/go/bin/derper -c ${DIRECTORY}/derp.conf --hostname ${DOMAIN} --certdir ${DIRECTORY}"
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
+    EOF
+  - systemctl daemon-reload
+  - systemctl enable --now derper
+  - touch /root/done

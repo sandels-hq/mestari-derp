@@ -27,9 +27,12 @@ resource "google_compute_instance" "derp1" {
   network_interface {
     network    = google_compute_network.mestari.id
     subnetwork = google_compute_subnetwork.mestari.id
-    access_config {
-      nat_ip = google_compute_address.derp1_public.address
-    }
+    # access_config {
+    #   nat_ip = google_compute_address.derp1_public.address
+    # }
+  }
+  metadata = {
+    user-data = file("${path.module}/cloud-config.yaml")
   }
 }
 
