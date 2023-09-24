@@ -10,7 +10,7 @@ resource "google_dns_record_set" "derp" {
   ttl          = 300
   managed_zone = google_dns_managed_zone.derp_public.name
 
-  rrdatas = [google_compute_address.derp_lb.address]
+  rrdatas = [google_compute_address.derp1_public.address]
 }
 
 resource "google_dns_record_set" "derp_ipv6" {
@@ -19,5 +19,5 @@ resource "google_dns_record_set" "derp_ipv6" {
   ttl          = 300
   managed_zone = google_dns_managed_zone.derp_public.name
 
-  rrdatas = [google_compute_address.derp_lb_ipv6.address]
+  rrdatas = [google_compute_address.derp1_ipv6.address]
 }

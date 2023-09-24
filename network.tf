@@ -12,19 +12,19 @@ resource "google_compute_subnetwork" "mestari" {
   ipv6_access_type = "EXTERNAL"
 }
 
-resource "google_compute_address" "derp_lb" {
-  name         = "derp-lb"
-  region       = var.region
-  address_type = "EXTERNAL"
-}
+# resource "google_compute_address" "derp_lb" {
+#   name         = "derp-lb"
+#   region       = var.region
+#   address_type = "EXTERNAL"
+# }
 
-resource "google_compute_address" "derp_lb_ipv6" {
-  name               = "derp-lb-ipv6"
-  region             = var.region
-  subnetwork         = google_compute_subnetwork.mestari.id
-  ip_version         = "IPV6"
-  ipv6_endpoint_type = "NETLB"
-}
+# resource "google_compute_address" "derp_lb_ipv6" {
+#   name               = "derp-lb-ipv6"
+#   region             = var.region
+#   subnetwork         = google_compute_subnetwork.mestari.id
+#   ip_version         = "IPV6"
+#   ipv6_endpoint_type = "NETLB"
+# }
 
 resource "google_compute_address" "derp1_ipv6" {
   name               = "derp1-ipv6"
@@ -40,11 +40,11 @@ resource "google_compute_address" "mestari_nat" {
   address_type = "EXTERNAL"
 }
 
-# resource "google_compute_address" "derp1_public" {
-#   name         = "derp1"
-#   region       = var.region
-#   address_type = "EXTERNAL"
-# }
+resource "google_compute_address" "derp1_public" {
+  name         = "derp1"
+  region       = var.region
+  address_type = "EXTERNAL"
+}
 
 resource "google_compute_router" "mestari" {
   project = var.project_id
@@ -149,24 +149,24 @@ resource "google_compute_firewall" "stun_ipv6" {
   source_ranges = ["::/0"]
 }
 
-resource "google_compute_firewall" "lb_health_check" {
-  project = var.project_id
-  name    = "lb-health-check"
-  network = google_compute_network.mestari.id
+# resource "google_compute_firewall" "lb_health_check" {
+#   project = var.project_id
+#   name    = "lb-health-check"
+#   network = google_compute_network.mestari.id
 
-  allow {
-    protocol = "tcp"
-  }
-  source_ranges = ["35.191.0.0/16", "209.85.152.0/22", "209.85.204.0/22"]
-}
+#   allow {
+#     protocol = "tcp"
+#   }
+#   source_ranges = ["35.191.0.0/16", "209.85.152.0/22", "209.85.204.0/22"]
+# }
 
-resource "google_compute_firewall" "lb_health_check_ipv6" {
-  project = var.project_id
-  name    = "lb-health-check-ipv6"
-  network = google_compute_network.mestari.id
+# resource "google_compute_firewall" "lb_health_check_ipv6" {
+#   project = var.project_id
+#   name    = "lb-health-check-ipv6"
+#   network = google_compute_network.mestari.id
 
-  allow {
-    protocol = "tcp"
-  }
-  source_ranges = ["2600:1901:8001::/48"]
-}
+#   allow {
+#     protocol = "tcp"
+#   }
+#   source_ranges = ["2600:1901:8001::/48"]
+# }
